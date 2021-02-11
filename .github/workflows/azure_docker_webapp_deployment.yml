@@ -102,7 +102,7 @@ jobs:
   azure-deployment-production:
     name: 📦 Azure deployment production
     runs-on: ubuntu-latest
-    needs: [issue_ops, build-and-test, docker-build-and-push, azure-deployment-staging, validate-site-staging]
+    needs: [issue_ops, build-and-test, docker-build-and-push, azure-deployment-staging]
     environment:
       name: PRODUCTION
       url: "https://${{ needs.issue_ops.outputs.app_service_name }}.azurewebsites.net/"
