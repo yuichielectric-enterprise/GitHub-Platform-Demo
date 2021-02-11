@@ -3,6 +3,13 @@ terraform {
   required_providers {
     azurerm = "~> 2.33.0"
   }
+  backend "remote" {
+    organization = "phonomenal"
+
+    workspaces {
+      name = "GitHub-Platform-Demo"
+    }
+  }
 }
 
 provider "azurerm" {
