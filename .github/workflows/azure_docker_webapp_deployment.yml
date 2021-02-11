@@ -98,24 +98,6 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
         slot-name: staging
-  
-  validate-site-staging:
-    name: ✔️ Validate Deployment - Staging
-    runs-on: ubuntu-latest
-    needs: azure-deployment-staging
-
-    steps:
-    - name: Check the deployed service URL
-      uses: jtalk/url-health-check-action@v1.2
-      with:
-        # Check the following URLs one by one sequentially
-        url: https:/${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/|https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/user/james-leha
-        # Follow redirects, or just report success on 3xx status codes
-        follow-redirect: no # Optional, defaults to "no"
-        # Fail this action after this many failed attempts
-        max-attempts: 3 # Optional, defaults to 1
-        # Delay between retries
-        retry-delay: 5s # Optional, only applicable to max-attempts > 1
 
   azure-deployment-production:
     name: 📦 Azure deployment production
@@ -131,21 +113,3 @@ jobs:
         publish-profile: ${{ secrets.AZURE_CREDS }}
         images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
         slot-name: production
-
-  validate-site-production:
-    name: ✔️ Validate Deployment - Production
-    runs-on: ubuntu-latest
-    needs: azure-deployment-production
-
-    steps:
-    - name: Check the deployed service URL
-      uses: jtalk/url-health-check-action@v1.2
-      with:
-        # Check the following URLs one by one sequentially
-        url: https:/${{ needs.issue_ops.outputs.app_service_name }}.azurewebsites.net/|https://${{ needs.issue_ops.outputs.app_service_name }}.azurewebsites.net/user/james-leha
-        # Follow redirects, or just report success on 3xx status codes
-        follow-redirect: no # Optional, defaults to "no"
-        # Fail this action after this many failed attempts
-        max-attempts: 3 # Optional, defaults to 1
-        # Delay between retries
-        retry-delay: 5s # Optional, only applicable to max-attempts > 1
