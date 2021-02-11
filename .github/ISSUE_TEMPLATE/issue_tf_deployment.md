@@ -23,8 +23,7 @@ Update the below JSON with the appropriate values for the resource (**DO NOT use
 
 ### Deployment Slots:
 **The following deployment slots will be added:**
-- **sandbox**
-- **qa**
+- **staging**
 
 ### Policies and Compliance
 **Required (will be assigned):**
