@@ -93,7 +93,7 @@ jobs:
       - run: echo $TF_VAR_registry_username
       
       - name: "Set Registry Password"
-        run: echo "TF_VAR_registry_password=${{ secrets.registry_PAT }}" >> $GITHUB_ENV
+        run: echo "TF_VAR_registry_password=${{ secrets.GHCR_PASSWORD }}" >> $GITHUB_ENV
         
       - run: echo $TF_VAR_registry_password
         
