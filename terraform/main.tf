@@ -7,7 +7,7 @@ terraform {
     organization = "phonomenal"
 
     workspaces {
-      name = "GitHub-Platform-Demo"
+      name = "AzureAppService-State"
     }
   }
 }
