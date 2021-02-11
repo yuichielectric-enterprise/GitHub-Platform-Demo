@@ -122,6 +122,17 @@ resource "azurerm_app_service_slot" "staging" {
   resource_group_name = azurerm_resource_group.main.name
   app_service_plan_id = azurerm_app_service_plan.main.id
   app_service_name    = azurerm_app_service.main.name
+
+  site_config {
+    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    always_on        = "true"
+  }
+  app_settings = {
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://ghcr.io/"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = var.registry_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = var.registry_password
+    "WEBSITES_PORT"                   = "8000"
+  }
 }
 
 resource "azurerm_policy_assignment" "Diagnostic_Logs" {

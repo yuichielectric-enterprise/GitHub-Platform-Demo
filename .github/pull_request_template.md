@@ -1,8 +1,6 @@
 
 ### Changes proposed in this PR:
 - 
-- 
-- 
 
 ### Deployment Information
 **Azure App Service:**
