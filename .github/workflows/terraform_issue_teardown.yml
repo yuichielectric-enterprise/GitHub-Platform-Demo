@@ -58,7 +58,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.TF_VAR_tenant_id }}
     defaults:
       run:
-        working-directory: ./terraform-manual
+        working-directory: ./terraform
 
     steps:
       - name: "Checkout"
