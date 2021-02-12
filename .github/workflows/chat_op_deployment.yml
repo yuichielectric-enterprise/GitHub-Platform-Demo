@@ -24,7 +24,7 @@ jobs:
       - uses: rishabhgupta/split-by@v1
         id: split
         with:
-          string: 'feat/branch-name'
+          string: ${{ github.event.comment.body}}
           split-by: '#'
       - run: | 
           echo "${{ steps.split.outputs._1}}"
