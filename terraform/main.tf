@@ -105,7 +105,7 @@ resource "azurerm_app_service" "main" {
   app_service_plan_id = azurerm_app_service_plan.main.id
 
   site_config {
-    # linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:9f99350b76b98ff46af7ed0312add1a328604840"
+    # linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
     always_on = "true"
   }
   app_settings = {
@@ -124,8 +124,8 @@ resource "azurerm_app_service_slot" "staging" {
   app_service_name    = azurerm_app_service.main.name
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
-    always_on        = "true"
+    # linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    always_on = "true"
   }
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL"      = "https://ghcr.io/"

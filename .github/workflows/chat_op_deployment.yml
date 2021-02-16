@@ -11,9 +11,7 @@ jobs:
   issue_ops:
     name: "Extract Issue Ops Values From PR"
     runs-on: ubuntu-latest
-    if: | 
-      (${{ github.event.issue.pull_request }}  &&
-      contains(github.event.comment.body,'/deploy'))
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body,'/deploy') }}
     outputs:
         app_service_name: ${{ steps.set_env_values.outputs.app_service_name }}
     
