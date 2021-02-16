@@ -105,7 +105,7 @@ resource "azurerm_app_service" "main" {
   app_service_plan_id = azurerm_app_service_plan.main.id
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:latest"
     always_on        = "true"
   }
   app_settings = {
