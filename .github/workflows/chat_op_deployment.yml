@@ -51,7 +51,9 @@ jobs:
   build-and-test:
     name: 🧪 Build and Test
     runs-on: ubuntu-latest
-
+    if: | 
+      (${{ github.event.issue.pull_request }}  &&
+      contains(github.event.comment.body,'/deploy'))    
     strategy:
       matrix:
         node: ['10.x', '12.x', '14.x']
