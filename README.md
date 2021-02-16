@@ -78,6 +78,9 @@ These secrets are assigned in the workflow .yml files for the AzureRM Provider A
 1. `docker build --tag nodejs-demo .`
 2. `docker run -p 8000:8000 nodejs-demo`
 
+## Run from container image
+1. `docker run -it -p 8000:8000 ghcr.io/octodemo/demoday-node:<tag> /bin/bash`
+
 ## Triggering Actions for Azure Deployment
 
 1. Create a new branch
