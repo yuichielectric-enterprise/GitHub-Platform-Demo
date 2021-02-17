@@ -41,9 +41,10 @@ jobs:
       - name: Print JSON Variables from Issue
         run: |
           echo "The requesting Team Name: ${{ steps.set_env_values.outputs.requesting_team }}"
+          echo "The TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
 
       - name: Check if using TF State
-        if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == "true"
+        if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == true
         run: |
           echo "Terraform State IS being used. Exiting..."
           exit 1
