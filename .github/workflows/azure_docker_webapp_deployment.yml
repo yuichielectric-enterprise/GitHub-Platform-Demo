@@ -4,7 +4,7 @@ name: Deploy Container via PR
 on:
   pull_request:
     branches:
-      - test-branch
+      - main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,8 +19,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@master
 
-      ## Issue Ops - Extract information from JSON - Local Action
-      - name: Extract Issue Demo Specification
+      - name: Extract TF Issue Demo Specification
         id: issue_body
         uses: peter-murray/issue-body-parser-action@v1
         with:
@@ -28,12 +27,30 @@ jobs:
           issue_id: ${{ github.event.number }}
       
       - name: Set JSON Variables as Output Values
-        id: set_env_values
+        id: set_tf_env_values
         run: | 
           for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
           echo '::set-output name='"$s"''
           done
-          
+
+      # - name: Set TF Issue Output Step
+      #   id: terraform_request_issue_number
+      #   run: echo "::set-output name=terraform_request_issue_number::${{ steps.set_env_values.outputs.terraform_request_issue_number }}"
+      
+      - name: Extract Issue Demo Specification
+        id: tf_issue_body
+        uses: peter-murray/issue-body-parser-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_id: ${{ steps.set_tf_env_values.outputs.terraform_request_issue_number }}
+      
+      - name: Set JSON Variables as Output Values
+        id: set_env_values
+        run: | 
+          for s in $(echo '${{ steps.tf_issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
+          echo '::set-output name='"$s"''
+          done
+
       - name: Set App Service Output Step
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
@@ -59,6 +76,7 @@ jobs:
         npm run build --if-present
         npm run test --if-present
     
+   
   docker-build-and-push:
     name: Build and push
     runs-on: ubuntu-latest
@@ -79,8 +97,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: ./Dockerfile
+        context: ./src
+        file: ./src/Dockerfile
         push: true
         tags: ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}
 
@@ -98,6 +116,11 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
         slot-name: staging
+    
+    - name: Load Deployment
+      timeout-minutes: 5
+      continue-on-error: false
+      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/user/james-leha
 
   azure-deployment-production:
     name: 📦 Azure deployment production
