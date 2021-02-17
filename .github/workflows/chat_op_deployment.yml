@@ -109,9 +109,9 @@ jobs:
         slot-name: staging
     
     - name: Load Deployment
-      timeout-minutes: 2
-      continue-on-error: true
-      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/users
+      timeout-minutes: 5
+      continue-on-error: false
+      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/user/james-leha
 
   azure-deployment-production:
     name: 📦 Azure deployment production
