@@ -40,6 +40,10 @@ jobs:
           for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
           echo '::set-output name='"$s"''
           done
+      
+      - name: Check if using TF State
+        if: ${{ steps.set_env_values.outputs.requesting_team }} == "false"
+        run: exit 1
 
       - name: Print JSON Variables from Issue
         run: |
