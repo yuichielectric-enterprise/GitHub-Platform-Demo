@@ -63,10 +63,17 @@ jobs:
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
       
-      - name: Set TF Directory
+      - name: Set TF Directory stateless
         id: tf_state_dir
         if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == false
         run: echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_stateless }}"
+  
+      - name: Set TF Directory Cloud State
+        id: tf_state_dir
+        if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == true
+        run: echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_state }}"
+
+      - run: echo $tf_working_dir
 
   terraform:
     name: "📦 TF Deploy Azure App Service"
