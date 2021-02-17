@@ -65,7 +65,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.TF_VAR_tenant_id }}
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: ./terraform/tf_cloud_state
 
     steps:
       - name: "Checkout"
