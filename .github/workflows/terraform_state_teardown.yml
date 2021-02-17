@@ -39,16 +39,18 @@ jobs:
           for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
           echo '::set-output name='"$s"''
           done
-      
-      - name: Check if using TF State
-        if: steps.set_env_values.outputs.tf_cloud_state == "false"
-        run: |
-          echo "Terraform State is NOT being used. Exiting..."
-          exit 1
 
       - name: Print JSON Variables from Issue
         run: |
           echo "The requesting Team Name: ${{ steps.set_env_values.outputs.requesting_team }}"
+          echo "The TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
+      
+      - name: Check if using TF State
+        if: steps.set_env_values.outputs.tf_cloud_state == 'false'
+        run: |
+          echo "Terraform State is NOT being used. Exiting..."
+          exit 1
+
 
   terraform:
     name: "📦 TF Destroy Azure App Service"
