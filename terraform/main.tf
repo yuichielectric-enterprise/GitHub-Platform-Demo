@@ -7,9 +7,7 @@ terraform {
     organization = "phonomenal"
 
     workspaces {
-      # name = "AzureAppService-State"
-      name = "None"
-
+      name = "AzureAppService-State"
     }
   }
 }
