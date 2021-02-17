@@ -124,7 +124,7 @@ resource "azurerm_app_service_slot" "staging" {
   app_service_name    = azurerm_app_service.main.name
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:latest"
     always_on        = "true"
   }
   app_settings = {
