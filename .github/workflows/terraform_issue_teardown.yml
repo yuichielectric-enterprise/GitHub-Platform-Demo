@@ -26,7 +26,6 @@ jobs:
       - name: Checkout Actions Source
         uses: actions/checkout@v2
 
-      ### Issue Ops - Extract information from JSON - Local Action
       - name: Extract Issue Demo Specification
         id: issue_body
         uses: peter-murray/issue-body-parser-action@v1
@@ -42,7 +41,7 @@ jobs:
           done
       
       - name: Check if using TF State
-        if: ${{ steps.set_env_values.outputs.requesting_team }} == "false"
+        if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == "false"
         run: |
           echo "Terraform State is NOT being used. Exiting..."
           exit 1
