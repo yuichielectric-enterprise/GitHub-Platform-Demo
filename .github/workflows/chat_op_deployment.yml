@@ -2,9 +2,8 @@ name: Deploy Container via PR
 
 # Controls when the action will run. 
 on:
-  pull_request:
-    branches:
-      - main
+  issue_comment:
+    types: [created]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -12,6 +11,7 @@ jobs:
   issue_ops:
     name: "Extract Issue Ops Values From PR"
     runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body,'/deploy') }}
     outputs:
         app_service_name: ${{ steps.set_env_values.outputs.app_service_name }}
     
@@ -19,38 +19,29 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@master
 
-      - name: Extract TF Issue Demo Specification
+      - uses: rishabhgupta/split-by@v1
+        id: split
+        with:
+          string: ${{ github.event.comment.body}}
+          split-by: '#'
+      - run: | 
+          echo "${{ steps.split.outputs._1}}"
+
+      ## Issue Ops - Extract information from JSON - Local Action
+      - name: Extract Issue Demo Specification
         id: issue_body
         uses: peter-murray/issue-body-parser-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_id: ${{ github.event.number }}
-      
-      - name: Set JSON Variables as Output Values
-        id: set_tf_env_values
-        run: | 
-          for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
-          echo '::set-output name='"$s"''
-          done
-
-      # - name: Set TF Issue Output Step
-      #   id: terraform_request_issue_number
-      #   run: echo "::set-output name=terraform_request_issue_number::${{ steps.set_env_values.outputs.terraform_request_issue_number }}"
-      
-      - name: Extract Issue Demo Specification
-        id: tf_issue_body
-        uses: peter-murray/issue-body-parser-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_id: ${{ steps.set_tf_env_values.outputs.terraform_request_issue_number }}
+          issue_id: ${{ steps.split.outputs._1}}
       
       - name: Set JSON Variables as Output Values
         id: set_env_values
         run: | 
-          for s in $(echo '${{ steps.tf_issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
+          for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
           echo '::set-output name='"$s"''
           done
-
+          
       - name: Set App Service Output Step
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
@@ -58,7 +49,7 @@ jobs:
   build-and-test:
     name: 🧪 Build and Test
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body,'/deploy') }}
     strategy:
       matrix:
         node: ['10.x', '12.x', '14.x']
@@ -72,11 +63,11 @@ jobs:
     - name: npm install, build, and test
       run: |
         # Build and test the project
+        cd src
         npm install
         npm run build --if-present
         npm run test --if-present
     
-   
   docker-build-and-push:
     name: Build and push
     runs-on: ubuntu-latest

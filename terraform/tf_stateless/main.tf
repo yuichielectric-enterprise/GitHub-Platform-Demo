@@ -3,13 +3,6 @@ terraform {
   required_providers {
     azurerm = "~> 2.33.0"
   }
-  backend "remote" {
-    organization = "phonomenal"
-
-    workspaces {
-      name = "GitHub-Platform-Demo"
-    }
-  }
 }
 
 provider "azurerm" {
@@ -105,7 +98,7 @@ resource "azurerm_app_service" "main" {
   app_service_plan_id = azurerm_app_service_plan.main.id
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:baseline"
     always_on        = "true"
   }
   app_settings = {
@@ -124,7 +117,7 @@ resource "azurerm_app_service_slot" "staging" {
   app_service_name    = azurerm_app_service.main.name
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:baseline"
     always_on        = "true"
   }
   app_settings = {

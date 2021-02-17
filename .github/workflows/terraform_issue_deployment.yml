@@ -5,7 +5,9 @@ on:
   issue_comment: 
   
 env:
-  tf_actions_working_dir: ./terraform
+  tf_actions_working_dir_state: ./terraform/tf_cloud_state
+  tf_actions_working_dir_stateless: ./terraform/tf_stateless
+
 
 jobs:
 
@@ -22,7 +24,10 @@ jobs:
         sku_size: ${{ steps.set_env_values.outputs.TF_VAR_sku_size }}
         sku_tier: ${{ steps.set_env_values.outputs.TF_VAR_sku_tier }}
         json_body_payload: ${{ steps.issue_body.outputs.payload }}
+        tf_cloud_state: ${{ steps.set_env_values.outputs.tf_cloud_state }}
+        tf_working_dir: ${{ steps.tf_state_dir.outputs.tf_working_dir }}
         output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }}
+
         # environments: ${{ steps.environments_returned.outputs.payload }}
     
     steps:
@@ -51,10 +56,32 @@ jobs:
           echo "The requested Location: ${{ steps.set_env_values.outputs.location }}"
           echo "The requested SKU Size: ${{ steps.set_env_values.outputs.sku_size }}"
           echo "The requested SKU Tier: ${{ steps.set_env_values.outputs.sku_tier }}"
+          echo "The requested TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
+
           
       - name: Set App Service Output Step
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
+      
+      # - name: Set TF Directory stateless
+      #   id: tf_state_dir
+      #   if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == false
+      #   run: echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_stateless }}"
+  
+      - name: Set TF Directory Cloud State
+        id: tf_state_dir
+        run: |
+          if [[ ${{ steps.set_env_values.outputs.tf_cloud_state }} == false ]]; 
+          then
+            echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_stateless }}"
+          fi
+
+          if [[ ${{ steps.set_env_values.outputs.tf_cloud_state }} == true ]]; 
+          then
+            echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_state }}"
+          fi
+
+      - run: echo ${{ steps.tf_state_dir.outputs.tf_working_dir }}
 
   terraform:
     name: "📦 TF Deploy Azure App Service"
@@ -69,7 +96,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.TF_VAR_tenant_id }}
     defaults:
       run:
-        working-directory: ${{ env.tf_actions_working_dir }}
+        working-directory: ${{ needs.issue_ops.outputs.tf_working_dir }}
 
     steps:
       - name: "Checkout"

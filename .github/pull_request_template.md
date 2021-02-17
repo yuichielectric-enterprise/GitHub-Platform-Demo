@@ -8,9 +8,9 @@ Update the below JSON with the appropriate Azure App Service name for deployment
 
 ```json
 {
-    "app_service_name": "app_service_name"
+    "terraform_request_issue_number": "00"
 } 
 ```
 
-### Related Terraform Deployment Issue
+### Related Issues
 - 

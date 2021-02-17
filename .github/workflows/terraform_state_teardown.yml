@@ -1,4 +1,4 @@
-name: "Teardown from Issue Close"
+name: "Teardown TF State from Issue Close"
 
 on: 
   issues:
@@ -26,7 +26,6 @@ jobs:
       - name: Checkout Actions Source
         uses: actions/checkout@v2
 
-      ### Issue Ops - Extract information from JSON - Local Action
       - name: Extract Issue Demo Specification
         id: issue_body
         uses: peter-murray/issue-body-parser-action@v1
@@ -44,6 +43,14 @@ jobs:
       - name: Print JSON Variables from Issue
         run: |
           echo "The requesting Team Name: ${{ steps.set_env_values.outputs.requesting_team }}"
+          echo "The TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
+      
+      - name: Check if using TF State
+        if: steps.set_env_values.outputs.tf_cloud_state == 'false'
+        run: |
+          echo "Terraform State is NOT being used. Exiting..."
+          exit 1
+
 
   terraform:
     name: "📦 TF Destroy Azure App Service"
@@ -58,7 +65,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.TF_VAR_tenant_id }}
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: ./terraform/tf_cloud_state
 
     steps:
       - name: "Checkout"
