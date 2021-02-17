@@ -17,7 +17,8 @@ Update the below JSON with the appropriate values for the resource (**DO NOT use
     "app_service_name": "Application-Name",
     "location": "eastus",
     "sku_tier": "Standard",
-    "sku_size": "S1"
+    "sku_size": "S1",
+    "tf_cloud_state": "false"
 } 
 ```
 
