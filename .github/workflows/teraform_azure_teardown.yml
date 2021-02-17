@@ -59,6 +59,6 @@ jobs:
           
           ## Delete the Azure Resource Group with optional [--yes] parameter to NOT prompt for confirmation
       - run: |
-          az group delete -n '${{ matrix.env-name }}-${{ steps.set_env_values.outputs.requesting_team }}-rg' --yes
+          az group delete -n '${{ steps.set_env_values.outputs.requesting_team }}-rg' --yes
 
   
