@@ -81,7 +81,7 @@ jobs:
             echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_state }}"
           fi
 
-      - run: echo $tf_working_dir
+      - run: echo ${{ steps.tf_state_dir.outputs.tf_working_dir }}
 
   terraform:
     name: "📦 TF Deploy Azure App Service"
