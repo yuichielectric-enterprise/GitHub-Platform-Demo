@@ -98,7 +98,7 @@ resource "azurerm_app_service" "main" {
   app_service_plan_id = azurerm_app_service_plan.main.id
 
   site_config {
-    linux_fx_version = "DOCKER|appsvcsample/static-site:latest"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:baseline"
     always_on        = "true"
   }
   app_settings = {
@@ -117,7 +117,7 @@ resource "azurerm_app_service_slot" "staging" {
   app_service_name    = azurerm_app_service.main.name
 
   site_config {
-    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:9bc291bcc00fea0bc3cc36a5700a84c6fec8da75"
+    linux_fx_version = "DOCKER|ghcr.io/octodemo/demoday-node:baseline"
     always_on        = "true"
   }
   app_settings = {
