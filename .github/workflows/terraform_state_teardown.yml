@@ -41,7 +41,7 @@ jobs:
           done
       
       - name: Check if using TF State
-        if: steps.set_env_values.outputs.tf_cloud_state == false
+        if: steps.set_env_values.outputs.tf_cloud_state == "false"
         run: |
           echo "Terraform State is NOT being used. Exiting..."
           exit 1
