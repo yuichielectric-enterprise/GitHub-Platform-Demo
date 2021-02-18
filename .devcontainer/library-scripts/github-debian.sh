@@ -43,7 +43,7 @@ fi
 # echo "Done!"
 
 echo "Downloading github CLI..."
-curl -OsSL https://github.com/cli/cli/releases/download/v1.3.1/gh_1.3.1_linux_am64.deb
+curl -OsSL https://github.com/cli/cli/releases/download/v1.3.1/gh_1.3.1_linux_amd64.deb
 echo "Installing github CLI..."
 apt-get install ./gh_1.3.1_linux_amd64.deb
 echo "Removing github CLI deb file after installation..."
