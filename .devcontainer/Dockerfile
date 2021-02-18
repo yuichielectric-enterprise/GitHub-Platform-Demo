@@ -26,7 +26,10 @@ RUN apt-get update \
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y nodejs \
     npm                       # note this one
-    
+
+COPY library-scripts/github-debian.sh /tmp/library-scripts/
+RUN apt-get update && bash /tmp/library-scripts/github-debian.sh
+
 VOLUME [ "/var/lib/docker" ]
 
 # Setting the ENTRYPOINT to docker-init.sh will start up the Docker Engine 
