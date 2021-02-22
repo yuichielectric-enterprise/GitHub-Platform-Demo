@@ -97,28 +97,6 @@ a {
   box-shadow: var(--ui-shadow);
 }
 
-.BannerMid {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 50%;
-
-  border-radius: 5px;
-  align-self: center ;
-  overflow: hidden;
-  background: white;
-  padding: 10px;
-
-  font-family: "Share Tech Mono", monospace;
-  font-size: 30px;
-
-  border-bottom: var(--ui-shadow-border);
-  box-shadow: var(--ui-shadow);
-
-}
-
 .Message {
   background: white;
   padding: 30px;
@@ -136,13 +114,36 @@ a {
   line-height: 1.5em;
 }
 
+.BannerMid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 45%;
+
+  border-radius: 5px;
+  align-self: center ;
+  overflow: hidden;
+  background: white;
+  padding: 10px;
+  margin: 0;
+
+  font-family: "Share Tech Mono", monospace;
+  font-size: 30px;
+
+  border-bottom: var(--ui-shadow-border);
+  box-shadow: var(--ui-shadow);
+  margin-top: 8%;
+  margin-bottom: 0;
+}
+
 .Container {
   background: none;
   padding: none;
-  /* display: ce; */
   align-self: center ;
   vertical-align: middle;
-  padding-bottom: 10%;
+  padding-bottom: 1%;
 }
 
 .Item {
@@ -152,14 +153,15 @@ a {
   box-shadow: var(--ui-shadow);
   display: inline-block;
   justify-content: space-between;
-  width: 300px;
-  margin-left: 15px;
+  width: 250px;
+  margin-left: 30px;
 }
 
 .Item > .Title {
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   text-align: center;
-  width: 270px;
+  width: 220px;
+  height: 75px;
   margin: auto;
 }
 
@@ -245,7 +247,7 @@ a {
     box-shadow: var(--ui-shadow);
     align-self: center ;
     vertical-align: middle;
-    margin-bottom: 300;
+    margin-top: 3%;
   }
   
   .Input > .Title {
