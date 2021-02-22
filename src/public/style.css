@@ -103,19 +103,20 @@ a {
   justify-content: center;
   align-items: center;
 
-  width: 100%;
+  width: 50%;
 
   border-radius: 5px;
-
+  align-self: center ;
   overflow: hidden;
   background: white;
-  padding: 30px;
+  padding: 10px;
 
   font-family: "Share Tech Mono", monospace;
-  font-size: 40px;
+  font-size: 30px;
 
   border-bottom: var(--ui-shadow-border);
   box-shadow: var(--ui-shadow);
+
 }
 
 .Message {
@@ -133,6 +134,41 @@ a {
   display: flex;
   flex-direction: column;
   line-height: 1.5em;
+}
+
+.Container {
+  background: none;
+  padding: none;
+  /* display: ce; */
+  align-self: center ;
+  vertical-align: middle;
+  padding-bottom: 10%;
+}
+
+.Item {
+  background: white;
+  padding: 20px;
+  border-bottom: var(--ui-shadow-border);
+  box-shadow: var(--ui-shadow);
+  display: inline-block;
+  justify-content: space-between;
+  width: 300px;
+  margin-left: 15px;
+}
+
+.Item > .Title {
+  padding-bottom: 15px;
+  text-align: center;
+  width: 270px;
+  margin: auto;
+}
+
+.Item > .Details {
+  display: flex;
+  flex-direction: column;
+  /* line-height: 1.5em; */
+  width: fit-content;
+  margin: auto;
 }
 
 .NavButtons {
