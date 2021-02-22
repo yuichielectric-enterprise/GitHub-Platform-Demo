@@ -134,7 +134,7 @@ a {
 
   border-bottom: var(--ui-shadow-border);
   box-shadow: var(--ui-shadow);
-  margin-top: 8%;
+  margin-top: 24%;
   margin-bottom: 0;
 }
 
@@ -248,6 +248,11 @@ a {
     align-self: center ;
     vertical-align: middle;
     margin-top: 3%;
+    position: absolute;
+    top: 10em;
+    min-height: 8em;
+    max-height: calc(100% - 15em);
+    overflow: auto;
   }
   
   .Input > .Title {
