@@ -1,0 +1,23 @@
+name: Deploy Container via PR
+
+# Controls when the action will run. 
+on:
+  workflow-dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  environments-deployment:
+    name: "🌲 Create GitHub Environments"
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: octokit/request-action@v2.x
+      id: post_create_environment
+      with:
+        route: POST /repos/{owner}/{repo}/environments/TestJames
+        owner: octokit
+        repo: request-action
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
