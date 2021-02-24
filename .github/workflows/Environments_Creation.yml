@@ -19,5 +19,5 @@ jobs:
         owner: octodemo
         repo: GitHub-Platform-Demo
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
