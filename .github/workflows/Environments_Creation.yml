@@ -15,9 +15,9 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/${{ github.repository }}/environments/TestJames
-#         owner: octokit
-#         repo: request-action
+        route: POST /repos/{owner}/{repo}/environments/TestJames
+        owner: octodemo
+        repo: GitHub-Platform-Demo
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
