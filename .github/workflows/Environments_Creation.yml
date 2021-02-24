@@ -15,7 +15,7 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos//${{ github.repository }}/environments/TestJames
+        route: POST /repos/${{ github.repository }}/environments/TestJames
         owner: octokit
         repo: request-action
       env:
