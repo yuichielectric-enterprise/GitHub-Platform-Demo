@@ -15,7 +15,7 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/{owner}/{repo}/environments/TestJames
+        route: POST /repos/octodemo/GitHub-Platform-Demo/environments/TestJames
         owner: octodemo
         repo: GitHub-Platform-Demo
         mediaType: application/vnd.github.v3+json
