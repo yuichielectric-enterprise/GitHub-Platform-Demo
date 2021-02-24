@@ -15,10 +15,9 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/octodemo/GitHub-Platform-Demo/environments/ACTIONMADE
+        route: POST /repos/octodemo/GitHub-Platform-Demo/environments/TESTING
         owner: octodemo
         repo: GitHub-Platform-Demo
-        mediatype: application/vnd.github.v3+json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
