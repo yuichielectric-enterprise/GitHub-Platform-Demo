@@ -16,8 +16,6 @@ jobs:
       id: post_create_environment
       with:
         route: POST /repos/octodemo/GitHub-Platform-Demo/environments/TESTING
-        owner: octodemo
-        repo: GitHub-Platform-Demo
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
