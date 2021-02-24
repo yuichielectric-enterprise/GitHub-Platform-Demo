@@ -16,8 +16,8 @@ jobs:
       id: post_create_environment
       with:
         route: POST /repos/${{ github.repository }}/environments/TestJames
-        owner: octokit
-        repo: request-action
+#         owner: octokit
+#         repo: request-action
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
