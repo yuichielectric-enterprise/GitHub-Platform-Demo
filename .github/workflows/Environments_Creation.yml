@@ -24,7 +24,7 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
+        route: PUT /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
             # As JSON
         body: ${{ toJSON(env.REQUEST_BODY) }}
       env:
