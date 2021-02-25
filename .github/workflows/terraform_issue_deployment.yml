@@ -248,7 +248,7 @@ jobs:
       uses: octokit/request-action@v2.x
       id: post_create_staging_environment
       with:
-        route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
+        route: PUT /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING"
@@ -256,7 +256,7 @@ jobs:
       uses: octokit/request-action@v2.x
       id: post_create_prod_environment
       with:
-        route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
+        route: PUT /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD"
