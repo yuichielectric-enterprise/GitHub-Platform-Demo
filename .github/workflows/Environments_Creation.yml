@@ -26,7 +26,7 @@ jobs:
       with:
         route: POST /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
             # As JSON
-        body: ${{ toJSON(env.REQUEST_BODY) }
+        body: ${{ toJSON(env.REQUEST_BODY) }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
