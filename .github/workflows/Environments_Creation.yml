@@ -28,7 +28,6 @@ jobs:
         route: PUT /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
             # As JSON
         body: |
-          |
           ${{ env.REQUEST_BODY }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
