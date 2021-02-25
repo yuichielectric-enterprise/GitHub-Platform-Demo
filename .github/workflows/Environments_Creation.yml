@@ -3,6 +3,10 @@ name: Create environment
 # Controls when the action will run. 
 on:
   workflow_dispatch:
+    inputs:
+      environment-name: 
+        description: 'Name of Environment to generate'
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,7 +19,7 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/octodemo/GitHub-Platform-Demo/environments/TESTING
+        route: POST /repos/${{ github.repository	}}/environments/${{ github.event.inputs.name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
