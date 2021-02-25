@@ -26,7 +26,9 @@ jobs:
         json_body_payload: ${{ steps.issue_body.outputs.payload }}
         tf_cloud_state: ${{ steps.set_env_values.outputs.tf_cloud_state }}
         tf_working_dir: ${{ steps.tf_state_dir.outputs.tf_working_dir }}
-        output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }}
+        output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }
+        output_requestingTeamName: ${{ steps.requesting_teamName.outputs.requesting_teamName }}
+
 
         # environments: ${{ steps.environments_returned.outputs.payload }}
     
@@ -62,11 +64,10 @@ jobs:
       - name: Set App Service Output Step
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
-      
-      # - name: Set TF Directory stateless
-      #   id: tf_state_dir
-      #   if: ${{ steps.set_env_values.outputs.tf_cloud_state }} == false
-      #   run: echo "::set-output name=tf_working_dir::${{ env.tf_actions_working_dir_stateless }}"
+
+      - name: Set Requesting Team Output Step
+        id: requesting_teamName
+        run: echo "::set-output name=requesting_teamName::${{ steps.set_env_values.outputs.requesting_team }}"
   
       - name: Set TF Directory Cloud State
         id: tf_state_dir
@@ -243,10 +244,19 @@ jobs:
     needs: [issue_ops, terraform]
 
     steps:
-    - uses: octokit/request-action@v2.x
+    - name: Create STAGING Env
+      uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_appServiceName}}-STAGING
+        route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
-    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_appServiceName}}-STAGING"
+    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING"
+    - name: Create PROD Env
+      uses: octokit/request-action@v2.x
+      id: post_create_environment
+      with:
+        route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
+      env:
+        GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
+    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD"
