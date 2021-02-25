@@ -19,7 +19,7 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
       with:
-        route: POST /repos/${{ github.repository	}}/environments/${{ github.event.inputs.name }}
+        route: POST /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
