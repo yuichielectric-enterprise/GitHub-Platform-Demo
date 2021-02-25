@@ -16,10 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQUEST_BODY: |
-        {
-          "wait_timer": 42,
-          "reviewers": [ {"type": "User", "id": 62304682} ]
-        }
+        { "wait_timer": 42, "reviewers": [ {"type": "User", "id": 62304682} ] }
     steps:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
