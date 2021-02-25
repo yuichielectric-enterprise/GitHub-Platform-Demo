@@ -26,7 +26,7 @@ jobs:
         json_body_payload: ${{ steps.issue_body.outputs.payload }}
         tf_cloud_state: ${{ steps.set_env_values.outputs.tf_cloud_state }}
         tf_working_dir: ${{ steps.tf_state_dir.outputs.tf_working_dir }}
-        output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }
+        output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }}
         output_requestingTeamName: ${{ steps.requesting_teamName.outputs.requesting_teamName }}
 
 
