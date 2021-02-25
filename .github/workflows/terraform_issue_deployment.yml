@@ -249,4 +249,4 @@ jobs:
         route: POST /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_appServiceName}}-STAGING
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
-    - run: "echo Created Environment: ${{  }}"
+    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_appServiceName}}-STAGING"
