@@ -1,10 +1,10 @@
-name: Deploy Container via PR
+name: Prod Deployment via PR
 
 # Controls when the action will run. 
 on:
   push:
     branches:
-      - main
+      - main-fake
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
