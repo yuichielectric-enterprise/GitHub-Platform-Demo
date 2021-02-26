@@ -34,7 +34,7 @@ jobs:
             # As JSON
         body: |
           |
-            ${{ env.REQUEST_BODY }}
+          ${{ env.REQUEST_BODY }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
