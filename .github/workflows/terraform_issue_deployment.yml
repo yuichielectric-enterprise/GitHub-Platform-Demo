@@ -245,18 +245,19 @@ jobs:
 
     steps:
     - name: Create STAGING Env
-      uses: octokit/request-action@v2.x
-      id: post_create_staging_environment
+      uses: satak/webrequest-action@master
       with:
-        route: PUT /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
-      env:
-        GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
-    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING"
+        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
+        method: PUT
+        headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
     - name: Create PROD Env
-      uses: octokit/request-action@v2.x
-      id: post_create_prod_environment
+      uses: satak/webrequest-action@master
       with:
-        route: PUT /repos/${{github.repository}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
-      env:
-        GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
-    - run: "echo Created Environment: ${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD"
+        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
+        method: PUT
+        payload: |
+          {
+            "wait_timer": 3,
+            "reviewers": [ {"type": "User", "id": 62304682} ]
+          }
+        headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'

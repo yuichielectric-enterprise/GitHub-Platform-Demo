@@ -39,7 +39,7 @@ jobs:
         method: PUT
         payload: |
           {
-            "wait_timer": 5,
+            "wait_timer": 3,
             "reviewers": [ {"type": "User", "id": 62304682} ]
           }
         headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
