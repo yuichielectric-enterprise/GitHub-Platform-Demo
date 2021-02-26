@@ -42,4 +42,4 @@ jobs:
         #     "wait_timer": 5,
         #     "reviewers": [ {"type": "User", "id": 62304682} ]
         #   }
-        headers: '{"Authorization": "${{ secrets.GHCR_PASSWORD }}"}'
+        headers: '{"Authorization": Bearer "${{ secrets.GHCR_PASSWORD }}"}'
