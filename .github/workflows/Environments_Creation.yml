@@ -36,10 +36,10 @@ jobs:
     - uses: satak/webrequest-action@master
       with:
         url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ github.event.inputs.environment-name }}
-        method: Put
-        payload: |
-          {
-            "wait_timer": 5,
-            "reviewers": [ {"type": "User", "id": 62304682} ]
-          }
+        method: PUT
+        # payload: |
+        #   {
+        #     "wait_timer": 5,
+        #     "reviewers": [ {"type": "User", "id": 62304682} ]
+        #   }
         headers: '{"Authorization": "${{ secrets.GHCR_PASSWORD }}"}'
