@@ -14,27 +14,32 @@ jobs:
   environments-deployment:
     name: "🌲 Create GitHub Environments"
     runs-on: ubuntu-latest
-    env:
-    
-      # REQUEST_BODY: |
-      #     {
-      #       "wait_timer": 42,
-      #       "reviewers": [ {"type": "User", "id": 62304682} ]
-      #     }
-      REQUEST_BODY: |
-        {
-          "wait_timer": 42,
-          "reviewers": [ {"type": "User", "id": 62304682} ]
-        }
+
+    #   REQUEST_BODY: |
+    #     {
+    #       "wait_timer": 42,
+    #       "reviewers": [ {"type": "User", "id": 62304682} ]
+    #     }
+    # steps:
+    # - uses: octokit/request-action@v2.x
+    #   id: post_create_environment
+    #   with:
+    #     route: PUT /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
+    #         # As JSON
+    #     body: |
+    #       |
+    #       ${{ env.REQUEST_BODY }}
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
+    # - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
     steps:
-    - uses: octokit/request-action@v2.x
-      id: post_create_environment
+    - uses: satak/webrequest-action@master
       with:
-        route: PUT /repos/${{ github.repository	}}/environments/${{ github.event.inputs.environment-name }}
-            # As JSON
-        body: |
-          |
-          ${{ env.REQUEST_BODY }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
-    - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
+        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ github.event.inputs.environment-name }}
+        method: Put
+        payload: |
+          {
+            "wait_timer": 5,
+            "reviewers": [ {"type": "User", "id": 62304682} ]
+          }
+        headers: '{"Authorization": "${{ secrets.GHCR_PASSWORD }}"}'
