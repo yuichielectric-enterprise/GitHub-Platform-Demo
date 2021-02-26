@@ -20,7 +20,7 @@ jobs:
         {
           "wait_timer": 42,
           "reviewers": [ {"type": "User", "id": 62304682} ]
-          }
+        }
     steps:
     - uses: octokit/request-action@v2.x
       id: post_create_environment
@@ -29,7 +29,7 @@ jobs:
             # As JSON
         body: |
           |
-            ${{ env.REQUEST_BODY }}
+          ${{ env.REQUEST_BODY }}
       env:
         GITHUB_TOKEN: ${{ secrets.GHCR_PASSWORD }}
     - run: "echo latest release: ${{ steps.post_create_environment.outputs.data }}"
