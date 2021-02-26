@@ -37,9 +37,9 @@ jobs:
       with:
         url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ github.event.inputs.environment-name }}
         method: PUT
-        # payload: |
-        #   {
-        #     "wait_timer": 5,
-        #     "reviewers": [ {"type": "User", "id": 62304682} ]
-        #   }
+        payload: |
+          {
+            "wait_timer": 5,
+            "reviewers": [ {"type": "User", "id": 62304682} ]
+          }
         headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
