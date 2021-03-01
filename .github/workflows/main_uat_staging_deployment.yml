@@ -127,7 +127,7 @@ jobs:
     - name: Load Deployment
       timeout-minutes: 5
       continue-on-error: false
-      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user/james-leha
+      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user
 
   azure-deployment-staging:
     name: 📦 Azure deployment staging
