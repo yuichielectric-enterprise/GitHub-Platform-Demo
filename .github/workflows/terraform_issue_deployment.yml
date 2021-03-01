@@ -168,7 +168,7 @@ jobs:
             
             </details>
             
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ needs.issue_ops.outputs.tf_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
               
             github.issues.createComment({
               issue_number: context.issue.number,
@@ -201,7 +201,7 @@ jobs:
             * __Azure App Service Name__: ${TF_VAR_app_service_name}
             * __Actions Run:__ https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ needs.issue_ops.outputs.tf_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
               
             github.issues.createComment({
               issue_number: context.issue.number,
@@ -244,20 +244,47 @@ jobs:
     needs: [issue_ops, terraform]
 
     steps:
+    - name: Create UAT Env
+      uses: satak/webrequest-action@master
+      with:
+        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
+        method: PUT
+        headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
+    - name: Create UAT Env Secret
+      uses: satak/webrequest-action@master
+      with:
+        url: https://api.github.com/repositories/337926029/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT/secrets/AZURE_WEBAPP_PUBLISH_PROFILE
+        method: PUT
+        headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
     - name: Create STAGING Env
       uses: satak/webrequest-action@master
       with:
         url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
         method: PUT
-        headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
-    - name: Create PROD Env
-      uses: satak/webrequest-action@master
-      with:
-        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-PROD
-        method: PUT
         payload: |
           {
             "wait_timer": 3,
-            "reviewers": [ {"type": "User", "id": 62304682} ]
+            "reviewers": [ {"type": "User", "id": 9852409} ]
           }
         headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
+  
+    - name: Comment Environment Creation Success
+      uses: actions/github-script@v3.0.0
+      if: success()
+      with:
+        result-encoding: string
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### GitHub Environment Summary
+
+          * __UAT Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
+          * __STAGING Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
+          
+          * @${{ github.actor }}, please update Environment Secrets for the AZURE_WEBAPP_PUBLISH_PROFILE*`;
+            
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })                  
