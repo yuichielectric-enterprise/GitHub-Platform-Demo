@@ -274,7 +274,7 @@ jobs:
           * __UAT Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
           * __STAGING Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
           
-          *@octodemo/github-platform-reviewers , please create Environment Secrets for the respective AZURE_WEBAPP_PUBLISH_PROFILE*`;
+          * @octodemo/github-platform-reviewers , please create Environment Secrets for the respective *AZURE_WEBAPP_PUBLISH_PROFILE*`;
             
           github.issues.createComment({
             issue_number: context.issue.number,
