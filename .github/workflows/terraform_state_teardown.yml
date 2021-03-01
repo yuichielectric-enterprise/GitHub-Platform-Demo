@@ -51,6 +51,10 @@ jobs:
           echo "Terraform State is NOT being used. Exiting..."
           exit 1
 
+      - name: Set Requesting Team Output Step
+        id: requesting_teamName
+        run: echo "::set-output name=requesting_teamName::${{ steps.set_env_values.outputs.requesting_team }}"
+
 
   terraform:
     name: "📦 TF Destroy Azure App Service"
@@ -82,7 +86,7 @@ jobs:
         run: echo "TF_VAR_app_service_name=$TF_VAR_app_service_name" >> $GITHUB_ENV
         
       - run: echo $TF_VAR_app_service_name
-      
+
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1.2.1
         with:
@@ -125,5 +129,18 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+      - name: Delete UAT Env
+        uses: satak/webrequest-action@master
+        with:
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ needs.issue_ops.outputs.requesting_team }}-UAT
+          method: DELETE
+          headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
+      - name: Delete STAGING Env
+        uses: satak/webrequest-action@master
+        with:
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ needs.issue_ops.outputs.requesting_team }}-STAGING
+          method: DELETE
+          headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'         
 
   
