@@ -24,6 +24,7 @@ Update the below JSON with the appropriate values for the resource (**DO NOT use
 
 ### Deployment Slots:
 **The following deployment slots will be added:**
+- **uat**
 - **staging**
 
 ### Policies and Compliance
