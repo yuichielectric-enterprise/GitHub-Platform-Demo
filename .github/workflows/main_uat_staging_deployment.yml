@@ -103,10 +103,30 @@ jobs:
         push: true
         tags: ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}
 
+  azure-deployment-UAT:
+    name: 📦 Azure deployment uat
+    runs-on: ubuntu-latest
+    needs: [issue_ops, build-and-test, docker-build-and-push]
+    environment:
+      name: UAT
+      url: "https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/"
+    steps:
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ needs.issue_ops.outputs.app_service_name }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
+        slot-name: uat
+    
+    - name: Load Deployment
+      timeout-minutes: 5
+      continue-on-error: false
+      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user/james-leha
+
   azure-deployment-staging:
     name: 📦 Azure deployment staging
     runs-on: ubuntu-latest
-    needs: [issue_ops, build-and-test, docker-build-and-push]
+    needs: [issue_ops, build-and-test, docker-build-and-push, azure-deployment-UAT]
     environment:
       name: STAGING
       url: "https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/"
@@ -123,20 +143,20 @@ jobs:
       continue-on-error: false
       run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-staging.azurewebsites.net/user/james-leha
 
-  azure-deployment-production:
-    name: 📦 Azure deployment production
-    runs-on: ubuntu-latest
-    needs: [issue_ops, build-and-test, docker-build-and-push, azure-deployment-staging]
-    environment:
-      name: PRODUCTION
-      url: "https://${{ needs.issue_ops.outputs.app_service_name }}.azurewebsites.net/"
-    steps:
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDS }}
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ needs.issue_ops.outputs.app_service_name }}
-        images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
-        slot-name: production
+  # azure-deployment-production:
+  #   name: 📦 Azure deployment production
+  #   runs-on: ubuntu-latest
+  #   needs: [issue_ops, build-and-test, docker-build-and-push, azure-deployment-staging]
+  #   environment:
+  #     name: PRODUCTION
+  #     url: "https://${{ needs.issue_ops.outputs.app_service_name }}.azurewebsites.net/"
+  #   steps:
+  #   - name: 'Login via Azure CLI'
+  #     uses: azure/login@v1
+  #     with:
+  #       creds: ${{ secrets.AZURE_CREDS }}
+  #   - uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: ${{ needs.issue_ops.outputs.app_service_name }}
+  #       images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
+  #       slot-name: production
