@@ -18,6 +18,9 @@ jobs:
     needs: permission
     if: contains(github.event.issue.labels.*.name, 'terraform') 
     runs-on: ubuntu-latest
+    outputs:
+        app_service_name: ${{ steps.set_env_values.outputs.app_service_name }}
+        requesting_team: ${{ steps.set_env_values.outputs.requesting_team }}
 
     steps:
 
@@ -60,5 +63,23 @@ jobs:
           ## Delete the Azure Resource Group with optional [--yes] parameter to NOT prompt for confirmation
       - run: |
           az group delete -n '${{ steps.set_env_values.outputs.requesting_team }}-rg' --yes
+
+      - name: Create UAT Env
+        uses: satak/webrequest-action@master
+        with:
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-UAT
+          method: DELETE
+          headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
+      - name: Create STAGING Env
+        uses: satak/webrequest-action@master
+        with:
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-STAGING
+          method: DELETE
+          payload: |
+            {
+              "wait_timer": 3,
+              "reviewers": [ {"type": "User", "id": 9852409} ]
+            }
+          headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
 
   
