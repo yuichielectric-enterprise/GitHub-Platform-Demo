@@ -2,8 +2,6 @@
 
 **NOT** intended for production use. For demonstration purposes only 😊 .
 
-A demo node express app to show off GitHub Actions CD capabilities by deploying to an Azure App Service.
-
 This web app will allow you to search for any GitHub user by their handle!
 
 ## Getting Started
@@ -11,8 +9,18 @@ This web app will allow you to search for any GitHub user by their handle!
 ### Demo Flow
 1. Create a new issue using the issue template: "Terraform Request - Azure App Service"
 2. Fill out required JSON body object
-3. 
-
+3. Add a comment to the issue that includes the trigger string '/approved'
+4. GitHub Action will kick off generating:
+    - an Azure Resource Group, App Service plan and App Service (with deployment slots)
+    - GitHub Environments (for UAT and STAGING - will include protection rules for STAGING)
+5. Create an environment secret for the two generate environments with a value for the **AZURE_WEBAPP_PUBLISH_PROFILE** downloaded from the Azure App Service slots
+5. Create a New PR, include in the JSON body the issue # from *step 4*
+6. Deploy Container via PR workflow will trigger performing:
+    - Issue Ops grabbing Azure resource values from the TF request Issue
+    - Build and Test 
+    - Build and Deploy to GHCR 
+    - Deploying to UAT and STAGING Slots for Azure Web App
+8. Close the Issue to perform an Azure Resource Teardown and deletion of the generated Environments and Deployments
 ### Generate Azure Service Principal
 To deploy to Azure you will need to create a service principal. You can do that with the following command:
 
