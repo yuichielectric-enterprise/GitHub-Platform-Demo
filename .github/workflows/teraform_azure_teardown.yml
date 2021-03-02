@@ -64,17 +64,27 @@ jobs:
       - run: |
           az group delete -n '${{ steps.set_env_values.outputs.requesting_team }}-rg' --yes
 
-      - name: Delete UAT Env
+  cleanup-envs-and-deployments:
+    name: Cleanup Env and Deployments
+    runs-on: ubuntu-latest
+    needs: issue_ops_teardown
+
+    strategy:
+      matrix:
+        env: ['UAT', 'STAGING']
+    
+    steps:
+      - name: Delete Env
         uses: satak/webrequest-action@master
         with:
-          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-UAT
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ needs.issue_ops_teardown.outputs.app_service_name }}-${{ matrix.env }}
           method: DELETE
           headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
-      - name: Delete STAGING Env
-        uses: satak/webrequest-action@master
+
+      - name: Delete UAT Deployment
+        uses: strumwolf/delete-deployment-environment@v1.1.0
         with:
-          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-STAGING
-          method: DELETE
-          headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: ${{ needs.issue_ops_teardown.outputs.app_service_name }}-${{ matrix.env }}
 
   

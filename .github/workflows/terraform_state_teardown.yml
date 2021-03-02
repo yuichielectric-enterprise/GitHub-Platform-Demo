@@ -133,13 +133,13 @@ jobs:
       - name: Delete UAT Env
         uses: satak/webrequest-action@master
         with:
-          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ needs.issue_ops.outputs.requesting_team }}-UAT
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-UAT
           method: DELETE
           headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
       - name: Delete STAGING Env
         uses: satak/webrequest-action@master
         with:
-          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ needs.issue_ops.outputs.requesting_team }}-STAGING
+          url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{ steps.set_env_values.outputs.requesting_team }}-STAGING
           method: DELETE
           headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'         
 

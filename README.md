@@ -8,6 +8,11 @@ This web app will allow you to search for any GitHub user by their handle!
 
 ## Getting Started
 
+### Demo Flow
+1. Create a new issue using the issue template: "Terraform Request - Azure App Service"
+2. Fill out required JSON body object
+3. 
+
 ### Generate Azure Service Principal
 To deploy to Azure you will need to create a service principal. You can do that with the following command:
 
