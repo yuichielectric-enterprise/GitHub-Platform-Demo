@@ -89,7 +89,7 @@ jobs:
           method: DELETE
           headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
 
-      - name: Delete UAT Deployment
+      - name: Delete Deployment
         uses: strumwolf/delete-deployment-environment@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
