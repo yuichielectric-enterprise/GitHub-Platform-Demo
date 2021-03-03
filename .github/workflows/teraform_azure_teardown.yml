@@ -46,6 +46,14 @@ jobs:
           echo "The requesting Team Name: ${{ steps.set_env_values.outputs.requesting_team }}"
           echo "The TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
 
+      - name: Set App Service Output Step
+        id: app_serviceName
+        run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
+
+      - name: Set Requesting Team Output Step
+        id: requesting_teamName
+        run: echo "::set-output name=requesting_teamName::${{ steps.set_env_values.outputs.requesting_team }}"
+
       - name: Check if using TF State
         if: steps.set_env_values.outputs.tf_cloud_state == 'true'
         run: |
