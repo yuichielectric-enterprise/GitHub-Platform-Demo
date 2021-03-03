@@ -58,7 +58,7 @@ jobs:
 
   terraform:
     name: "📦 TF Destroy Azure App Service"
-    needs: issue_ops
+    needs: issue_ops_teardown
     if: contains(github.event.issue.labels.*.name, 'terraform') 
     runs-on: ubuntu-latest
     ### Azure Service Principal Values
