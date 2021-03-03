@@ -107,14 +107,9 @@ These secrets are assigned in the workflow .yml files for the AzureRM Provider A
 ## Reference Material
 
 - [Environments - GitHub Docs](https://docs.github.com/en/free-pro-team@latest/actions/reference/environments)
-
-- [Using the visualization graph - GitHub Docs](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/using-the-visualization-graph)
+- [GitHub + Microsoft Teams Integration](https://github.com/integrations/microsoft-teams)
 
 - [Deploy to App Service using GitHub Actions - Microsoft Docs](https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel)
-
-- [Helpful Guide on createing a Node Express App](https://auth0.com/blog/create-a-simple-and-stylish-node-express-app/)
-
-- [Continuous delivery with GitHub Actions - GitHub Universe 2020 YouTube](https://www.youtube.com/watch?v=36hY0-O4STg&t=10s&ab_channel=GitHub)
 
 - [Welcome to Codespaces - GitHub Universe 2020 YouTube](https://www.youtube.com/watch?v=j5VQ8OlwbqI&ab_channel=GitHub)
 

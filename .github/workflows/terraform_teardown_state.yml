@@ -75,11 +75,11 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@master
 
-      - name: Set JSON Variables as ENV Variables
+      - name: Set JSON Variables as Output Values
         id: set_env_values
         run: | 
-          for s in $(echo '${{ needs.issue_ops.outputs.json_body_payload }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
-          echo "TF_VAR_"$s >> $GITHUB_ENV 
+          for s in $(echo '${{ steps.issue_body.outputs.payload }}' | jq -r "to_entries|map(\"\(.key)::\(.value|tostring)\")|.[]" ); do
+          echo '::set-output name='"$s"''
           done
       
       - name: "Set App Service Name"
