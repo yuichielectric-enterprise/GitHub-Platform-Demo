@@ -83,7 +83,6 @@ jobs:
         npm run build --if-present
         npm run test --if-present
     
-   
   docker-build-and-push:
     name: Build and push
     runs-on: ubuntu-latest
@@ -125,9 +124,9 @@ jobs:
         slot-name: uat
     
     - name: Load Deployment
-      timeout-minutes: 5
+      timeout-minutes: 6
       continue-on-error: false
-      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user
+      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user/james-leha
 
   azure-deployment-staging:
     name: 📦 Azure deployment staging

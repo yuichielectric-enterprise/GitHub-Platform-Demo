@@ -4,7 +4,7 @@
 
 ### Deployment Information
 **Azure App Service:**
-Update the below JSON with the appropriate Azure App Service name for deployment:
+Update the below JSON with the appropriate Terraform Request issue # to be deployed:
 
 ```json
 {
