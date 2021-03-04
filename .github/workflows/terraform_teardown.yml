@@ -87,7 +87,7 @@ jobs:
       - run: |
           az group delete -n '${{ needs.issue_ops_teardown.outputs.requesting_team }}-rg' --yes
 
-  cleanup-envs-and-deployments:
+  cleanup-azure-envs:
     name: Cleanup Env and Deployments
     runs-on: ubuntu-latest
     needs: [issue_ops_teardown, teardown-azure]
@@ -111,7 +111,7 @@ jobs:
           environment: ${{ needs.issue_ops_teardown.outputs.requesting_team }}-${{ matrix.env }}
 
   teardown-terraform-state:
-    name: "📦 TF Destroy Azure App Service"
+    name: "📦 Teardown for Terraform State"
     needs: issue_ops_teardown
     if: needs.issue_ops_teardown.outputs.tf_cloud_state == 'true'
     runs-on: ubuntu-latest
@@ -170,9 +170,9 @@ jobs:
 
             #### Environment Summary
 
-            * __Azure Resource Group__: ${TF_VAR_requesting_team}-rg
-            * __Azure App Service Plan__: ${TF_VAR_requesting_team}-web-appservice
-            * __Azure App Service Name__: ${TF_VAR_app_service_name}
+            * __Azure Resource Group__: ${{ needs.issue_ops_teardown.outputs.requesting_team }}-rg
+            * __Azure App Service Plan__: ${{ needs.issue_ops_teardown.outputs.requesting_team }}-web-appservice
+            * __Azure App Service Name__: ${{ needs.issue_ops_teardown.outputs.app_service_name }}
             * __Actions Run:__ https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
