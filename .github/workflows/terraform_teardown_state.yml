@@ -1,8 +1,8 @@
 name: "Teardown TF State from Issue Close"
 
-on: 
-  issues:
-    types: [closed]  
+# on: 
+#   issues:
+#     types: [closed]  
 
 jobs:
   permission:
