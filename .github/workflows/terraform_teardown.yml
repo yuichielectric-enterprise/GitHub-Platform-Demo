@@ -90,7 +90,7 @@ jobs:
   cleanup-envs-and-deployments:
     name: Cleanup Env and Deployments
     runs-on: ubuntu-latest
-    needs: [issue_ops_teardown, environment-teardown]
+    needs: [issue_ops_teardown, teardown-azure]
 
     strategy:
       matrix:
