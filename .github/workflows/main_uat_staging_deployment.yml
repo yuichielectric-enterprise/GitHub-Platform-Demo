@@ -124,9 +124,12 @@ jobs:
         slot-name: uat
     
     - name: Load Deployment
-      timeout-minutes: 6
-      continue-on-error: false
-      run: curl https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user/james-leha
+      uses: cygnetdigital/wait_for_response@v2.0.0
+      with:
+        url: "https://${{ needs.issue_ops.outputs.app_service_name }}-uat.azurewebsites.net/user/james-leha"
+        responseCode: '200'
+        timeout: 360000
+        interval: 5000
 
   azure-deployment-staging:
     name: 📦 Azure deployment staging
