@@ -7,6 +7,9 @@ on:
 env:
   tf_actions_working_dir_state: ./terraform/tf_cloud_state
   tf_actions_working_dir_stateless: ./terraform/tf_stateless
+  environment_reviewer_type: Team
+  environment_reviewer_id: 4568357
+
 
 
 jobs:
@@ -247,18 +250,18 @@ jobs:
     - name: Create UAT Env
       uses: satak/webrequest-action@master
       with:
-        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
+        url: https://api.github.com/repos/${{ github.repository	}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
         method: PUT
         headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
     - name: Create STAGING Env
       uses: satak/webrequest-action@master
       with:
-        url: https://api.github.com/repos/octodemo/GitHub-Platform-Demo/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
+        url: https://api.github.com/repos/${{ github.repository	}}/environments/${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
         method: PUT
         payload: |
           {
             "wait_timer": 3,
-            "reviewers": [ {"type": "User", "id": 9852409} ]
+            "reviewers": [ {"type": "${{ env.environment_reviewer_type }}", "id": ${{ env.environment_reviewer_id }}} ]
           }
         headers: '{"Authorization": "Bearer ${{ secrets.GHCR_PASSWORD }}"}'
   
@@ -274,7 +277,7 @@ jobs:
           * __UAT Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-UAT
           * __STAGING Environment Created__: ${{needs.issue_ops.outputs.output_requestingTeamName}}-STAGING
           
-          * @octodemo/github-platform-reviewers , please create Environment Secrets for the respective *AZURE_WEBAPP_PUBLISH_PROFILE*`;
+          * Please create Environment Secrets for the respective *AZURE_WEBAPP_PUBLISH_PROFILE*`;
             
           github.issues.createComment({
             issue_number: context.issue.number,
