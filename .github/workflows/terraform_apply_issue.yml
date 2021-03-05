@@ -1,7 +1,5 @@
 name: "Terraform Deploy from Issue"
 on:
-  # issues:
-  #   types: [labeled]
   issue_comment: 
   
 env:
