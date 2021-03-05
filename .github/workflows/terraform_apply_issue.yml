@@ -29,9 +29,6 @@ jobs:
         tf_working_dir: ${{ steps.tf_state_dir.outputs.tf_working_dir }}
         output_appServiceName: ${{ steps.app_serviceName.outputs.app_serviceName }}
         output_requestingTeamName: ${{ steps.requesting_teamName.outputs.requesting_teamName }}
-
-
-        # environments: ${{ steps.environments_returned.outputs.payload }}
     
     steps:
       - name: "Checkout"
@@ -61,7 +58,6 @@ jobs:
           echo "The requested SKU Tier: ${{ steps.set_env_values.outputs.sku_tier }}"
           echo "The requested TF Cloud State: ${{ steps.set_env_values.outputs.tf_cloud_state }}"
 
-          
       - name: Set App Service Output Step
         id: app_serviceName
         run: echo "::set-output name=app_serviceName::${{ steps.set_env_values.outputs.app_service_name }}"
