@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  container-image: ghcr.io/octodemo/demoday-node
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
@@ -116,7 +119,7 @@ jobs:
       with:
         app-name: ${{ needs.issue_ops.outputs.app_service_name }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
+        images: '${{ env.container-image}}:${{ github.event.pull_request.head.sha || github.sha }}'
         slot-name: uat
     
     - name: Load Deployment
@@ -139,7 +142,7 @@ jobs:
       with:
         app-name: ${{ needs.issue_ops.outputs.app_service_name }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}'
+        images: '${{ env.container-image}}:${{ github.event.pull_request.head.sha || github.sha }}'
         slot-name: staging
     
     - name: Load Deployment
