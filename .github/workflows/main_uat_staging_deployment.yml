@@ -97,7 +97,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
-        password: ${{ secrets.GHCR_PASSWORD }}
+        password: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Build and push
       uses: docker/build-push-action@v2
@@ -105,7 +105,7 @@ jobs:
         context: ./src
         file: ./src/Dockerfile
         push: true
-        tags: ghcr.io/octodemo/demoday-node:${{ github.event.pull_request.head.sha || github.sha }}
+        tags: ${{ env.container-image}}:${{ github.event.pull_request.head.sha || github.sha }}
 
   azure-deployment-UAT:
     name: 📦 Azure deployment uat
